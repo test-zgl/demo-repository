@@ -30,3 +30,9 @@ jobs:
             issue_number: prNumber,
           });
           const labelEvent = events.data.find(event => event.event === 'labeled' && event.label.name === 'QA Dev');
+          if (labelEvent) {
+              const userWhoAddedLabel = labelEvent.actor.login;
+              console.log(`Etykieta QA Dev została dodana przez: ${userWhoAddedLabel}`);
+          } else {
+              console.log('Nie znaleziono wydarzenia z dodaniem etykiety QA Dev.');
+          }
