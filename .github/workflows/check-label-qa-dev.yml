@@ -1,0 +1,36 @@
+name: Check QA Dev Label on Push to Main
+
+on:
+  push:
+    branches:
+      - main  # Wskazuje na gałąź, do której ma być pushowany PR
+
+jobs:
+  check-label:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check if push is from a merged PR
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const prNumber = context.payload.head_commit.message.match(/Merge pull request #(\d+)/);
+          if (!prNumber) {
+            console.log('This push does not originate from a merged PR.');
+            return;
+          }
+
+          const pr = await github.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: prNumber[1],
+          });
+
+          const prLabels = pr.data.labels;
+          const hasQaDevLabel = prLabels.some(label => label.name === 'QA Dev');
+
+          if (!hasQaDevLabel) {
+            core.setFailed('Merged PR is missing the required QA Dev label.');
+          } else {
+            console.log('QA Dev label is present.');
+          }
