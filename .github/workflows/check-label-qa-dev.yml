@@ -2,7 +2,7 @@ name: Check QA Dev Label Before Merge to Main
 
 on:
   pull_request:
-    types: [labeled, synchronize, opened, ready_for_review]
+    types: [labeled, unlabeled, synchronize, opened, ready_for_review]
 
 jobs:
   check-label:
@@ -13,11 +13,6 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          if (context.payload.pull_request.base.ref !== 'main') {
-            console.log('PR nie jest kierowany do gałęzi main. Pomijam sprawdzenie.');
-            return;
-          }
-
           const prLabels = context.payload.pull_request.labels;
           const hasQaDevLabel = prLabels.some(label => label.name === 'QA Dev');
 
