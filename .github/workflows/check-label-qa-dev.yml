@@ -29,7 +29,7 @@ jobs:
             repo,
             issue_number: prNumber,
           });
-          const labelEvent = events.data.find(event => event.event === 'labeled' && event.label.name === 'QA Dev');
+          const labelAddEvent = events.data.find(event => event.event === 'labeled' && event.label.name === 'QA Dev');
           const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === 'QA Dev');
           if (labelAddEvent && labelAddEvent.actor.login === context.payload.sender.login) {
             if (!labelRemoveEvent || labelRemoveEvent.actor.login !== context.payload.sender.login || labelRemoveEvent.created_at < labelAddEvent.created_at) {
