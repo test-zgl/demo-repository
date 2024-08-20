@@ -20,5 +20,5 @@ jobs:
             core.setFailed('PR nie ma wymaganej etykiety QA Dev.');
           }
 
-          console.log(github.ussues);
+          console.log(github);
 
