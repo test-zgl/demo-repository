@@ -13,11 +13,17 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
+          const labelEvent = context.payload.label;
+          const labelAddedBy = labelEvent ? labelEvent.user.login : null;
+          const prAuthor = pr.user.login;
+
+          if (labelAddedBy && labelAddedBy === prAuthor) {
+            core.setFailed('Autor PR nie może dodać etykiety QA Dev do własnego PR.');
+          }
+        
           const prLabels = context.payload.pull_request.labels;
           const hasQaDevLabel = prLabels.some(label => label.name === 'QA Dev');
-
+          
           if (!hasQaDevLabel) {
             core.setFailed('PR nie ma wymaganej etykiety QA Dev.');
-          } else {
-            console.log('Etykieta QA Dev jest obecna.');
           }
