@@ -14,9 +14,32 @@ jobs:
       with:
         script: |
           const prLabels = context.payload.pull_request.labels;
-          console.log(context.payload.pull_request);
           const hasQaDevLabel = prLabels.some(label => label.name === 'QA Dev');
           
           if (!hasQaDevLabel) {
             core.setFailed('PR nie ma wymaganej etykiety QA Dev.');
+          }
+
+          const { data: events } = await github.issues.listEventsForTimeline({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: pr.number
+          });
+
+          const labelEvent = events.reverse().find(event => 
+            event.event === 'labeled' && event.label.name === 'QA Dev'
+          );
+
+          if (!labelEvent) {
+            core.setFailed('Nie udało się znaleźć zdarzenia dodania etykiety QA Dev.');
+            return;
+          }
+
+          const labelAddedBy = labelEvent.actor.login;
+          const prAuthor = pr.user.login;
+
+          if (labelAddedBy === prAuthor) {
+            core.setFailed('Autor PR nie może dodać etykiety QA Dev do własnego PR.');
+          } else {
+            console.log('Etykieta QA Dev jest obecna i została dodana przez inną osobę.');
           }
