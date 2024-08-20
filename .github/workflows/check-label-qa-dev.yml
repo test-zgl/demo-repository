@@ -30,7 +30,10 @@ jobs:
             issue_number: prNumber,
           });
           const labelEvent = events.data.find(event => event.event === 'labeled' && event.label.name === 'QA Dev');
-          if (labelEvent.actor.login === context.payload.sender.login) {
-            core.setFailed('Nie można samemu sobie nadać labelkę QA Dev');
+          const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === 'QA Dev');
+          if (labelAddEvent && labelAddEvent.actor.login === context.payload.sender.login) {
+            if (!labelRemoveEvent || labelRemoveEvent.actor.login !== context.payload.sender.login || labelRemoveEvent.created_at < labelAddEvent.created_at) {
+              core.setFailed('Nie można samemu sobie nadać labelki QA Dev.');
+            }
           }
 
