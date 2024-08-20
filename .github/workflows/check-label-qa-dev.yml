@@ -29,9 +29,7 @@ jobs:
             repo,
             issue_number: prNumber,
           });
-          const labelAddEvents = events.data
-            .filter(event => event.event === 'labeled' && event.label.name === 'QA Dev')
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+          const labelAddEvents = events.data.find(event => event.event === 'labeled' && event.label.name === 'QA Dev')
           console.log('add', labelAddEvent);
           const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === 'QA Dev');
           console.log('remove', labelRemoveEvent);
