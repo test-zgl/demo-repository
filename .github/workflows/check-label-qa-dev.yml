@@ -14,6 +14,7 @@ jobs:
       with:
         script: |
           const labelEvent = context.payload.label;
+          console.log(labelEvent);
           const labelAddedBy = labelEvent ? labelEvent.user.login : null;
           const prAuthor = pr.user.login;
 
