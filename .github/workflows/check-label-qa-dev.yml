@@ -20,5 +20,13 @@ jobs:
             core.setFailed('PR nie ma wymaganej etykiety QA Dev.');
           }
 
-          console.log(github);
+          const { owner, repo } = context.repo;
+          const prNumber = context.payload.pull_request.number;
 
+          // Pobranie listy wydarzeń związanych z PR
+          const events = await github.rest.issues.listEventsForTimeline({
+            owner,
+            repo,
+            issue_number: prNumber,
+          });
+          const labelEvent = events.data.find(event => event.event === 'labeled' && event.label.name === 'QA Dev');
