@@ -1,9 +1,10 @@
 name: Check QA Dev Label on Push to Main
 
 on:
-  push:
-    branches:
-      - main  # Wskazuje na gałąź, do której ma być pushowany PR
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
 
 jobs:
   check-label:
