@@ -29,6 +29,7 @@ jobs:
             repo,
             issue_number: prNumber,
           });
+          events.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
           console.log(events);
           const labelAddEvent = events.data.find(event => event.event === 'labeled' && event.label.name === 'QA Dev')
           console.log('add', labelAddEvent);
