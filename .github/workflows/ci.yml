@@ -19,4 +19,12 @@ jobs:
         run: composer install
       - name: Run cs fixer
         run: composer run-script lint
+      - name: Run PHPStan baseline
+        run: vendor/bin/phpstan analyse --generate-baseline phpstan-baseline-ci.neon
+      - name: Compare PHPStan baseline with PR's baseline
+        run: |
+          if ! diff -u phpstan-baseline.neon phpstan-baseline-ci.neon; then
+            echo "Error: The generated phpstan-baseline.neon differs from the one provided in the PR.";
+            exit 1;
+          fi
 

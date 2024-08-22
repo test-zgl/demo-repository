@@ -1,0 +1,5 @@
+parameters:
+    ignoreErrors:
+        - '#PHPDoc tag @var#'
+        - '#Access to an undefined property *#'
+        - '#Call to an undefined static method#'
