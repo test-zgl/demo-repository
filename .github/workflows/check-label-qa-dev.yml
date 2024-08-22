@@ -49,6 +49,7 @@ jobs:
             if (labelAddEvent && labelAddEvent.actor.login === context.payload.pull_request.user.login) {
               console.log('wchodze');
               if (!labelRemoveEvent || labelAddEvent.created_at > labelRemoveEvent.created_at) {
+                console.log('test');
                 core.setFailed(`Nie można samemu sobie nadać labelki ${label}.`);
               }
             }
