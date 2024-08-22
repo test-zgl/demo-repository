@@ -15,6 +15,9 @@ jobs:
         with:
           php-version: '8.3' # Ustaw wersję PHP, którą chcesz używać
           tools: composer # Install Composer
-          extensions: none
       - name: Install dependencies via Composer
         run: composer install
+      - name: Run tests
+        run: |
+          ./vendor/bin/phpunit --configuration phpunit.xml
+
