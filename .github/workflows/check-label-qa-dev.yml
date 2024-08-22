@@ -31,6 +31,7 @@ jobs:
           });
 
           const { owner, repo } = context.repo;
+          console.log(owner);
           const prNumber = context.payload.pull_request.number;
 
           // Pobranie listy wydarzeń związanych z PR
