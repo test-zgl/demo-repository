@@ -39,7 +39,10 @@ jobs:
             repo,
             issue_number: prNumber,
           });
-          events.data.filter(event => console.log(event.actor) === 'p-zywczak');
+          const userEvents = events.data.filter(event => {
+            console.log(event.actor.login);
+            return event.actor.login === 'p-zywczak';
+          });
           events.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
           requiredLabels.forEach(label => {
