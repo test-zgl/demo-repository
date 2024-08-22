@@ -42,7 +42,14 @@ jobs:
           events.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
           requiredLabels.forEach(label => {
-            const labelAddEvent = events.data.find(event => event.event === 'labeled' && event.label.name === label && event.actor.login === context.actor);
+            const labelRemoveEvent = events.data.find(event => {
+              if (event.event === 'unlabeled' && event.label.name === label && event.actor) {
+                console.log('Event actor login:', event.actor.login); // Debugowanie
+                console.log('Context actor:', context.actor); // Debugowanie
+                return event.actor.login === context.actor;
+              }
+                return false;
+              });
             const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === label && event.actor.login === context.actor);
             console.log('label', labelAddEvent.actor.login);
             console.log('context', context.payload.pull_request.user.login);
