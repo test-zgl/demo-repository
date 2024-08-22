@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  check-label:
+  build-test-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -20,7 +20,7 @@ jobs:
       - name: Run cs fixer
         run: composer run-script lint
       - name: Run PHPStan baseline
-        run: vendor/bin/phpstan analyse --generate-baseline phpstan-baseline-ci.neon
+        run: vendor/bin/phpstan analyse --generate-baseline phpstan-baseline-ci.neon --allow-empty-baseline
       - name: Compare PHPStan baseline with PR's baseline
         run: |
           if ! diff -u phpstan-baseline.neon phpstan-baseline-ci.neon; then
