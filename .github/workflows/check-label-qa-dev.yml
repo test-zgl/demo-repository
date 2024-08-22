@@ -39,8 +39,8 @@ jobs:
             repo,
             issue_number: prNumber,
           });
-          console.log('test', events);
-          events.data.filter(event => event.actor.login === context.actor);
+          console.log('test', events.data.actor.login);
+          events.data.filter(event => event.data.actor.login === context.actor);
           events.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
           requiredLabels.forEach(label => {
