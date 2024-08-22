@@ -42,11 +42,10 @@ jobs:
           events.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
           requiredLabels.forEach(label => {
-            const labelAddEvent = events.data.find(event => event.event === 'labeled' && event.label.name === label && event.actor.login === context.actor)
-                                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            const labelAddEvent = events.data.find(event => event.event === 'labeled' && event.label.name === label && event.actor.login === context.actor);
+            console.log('add', labelAddEvent);
             const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === label && event.actor.login === context.actor);
-            console.log('label', labelAddEvent.actor.login);
-            console.log('context', context.payload.pull_request.user.login);
+            console.log('remove', labelRemoveEvent);
             if (labelAddEvent && labelAddEvent.actor.login === context.payload.pull_request.user.login) {
               if (!labelRemoveEvent || labelAddEvent.created_at > labelRemoveEvent.created_at) {
                 core.setFailed(`Nie można samemu sobie nadać labelki ${label}.`);
