@@ -14,6 +14,12 @@ jobs:
       with:
         script: |
           const prLabels = context.payload.pull_request.labels;
+          
+          const hasDocumentationLabel = prLabels.some(label => label.name === 'DOCUMENTATION' || label.name === 'NOT DOCUMENTATION');
+          if (!hasDocumentationLabel) {
+            core.setFailed('PR musi mieć etykietę DOCUMENTATION lub NOT DOCUMENTATION.');
+          }
+          
           const requiredLabels = ['QA Dev', 'CR1', 'CR2'];
 
           requiredLabels.forEach(label => {
