@@ -14,12 +14,12 @@ jobs:
       with:
         script: |
           const prLabels = context.payload.pull_request.labels;
-          
+
           const hasDocumentationLabel = prLabels.some(label => label.name === 'DOCUMENTATION' || label.name === 'NOT DOCUMENTATION');
           if (!hasDocumentationLabel) {
             core.setFailed('PR musi mieć etykietę DOCUMENTATION lub NOT DOCUMENTATION.');
           }
-          
+
           const requiredLabels = ['QA Dev', 'CR1', 'CR2'];
 
           requiredLabels.forEach(label => {
@@ -40,17 +40,14 @@ jobs:
             issue_number: prNumber,
           });
           events.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-          
+
           requiredLabels.forEach(label => {
             const labelAddEvent = events.data.find(event => event.event === 'labeled' && event.label.name === label);
             const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === label);
+            console.log(context);
             if (labelAddEvent && labelAddEvent.actor.login === context.payload.sender.login) {
               if (!labelRemoveEvent || labelAddEvent.created_at > labelRemoveEvent.created_at) {
                 core.setFailed(`Nie można samemu sobie nadać labelki ${label}.`);
               }
             }
           });
-          
-
-
-
