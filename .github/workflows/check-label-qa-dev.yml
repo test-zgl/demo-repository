@@ -39,15 +39,15 @@ jobs:
             repo,
             issue_number: prNumber,
           });
+          console.log('user', context);
           const userEvents = events.data.filter(event => {
             if (event.actor && event.actor.login) {
-              console.log('Actor login:', event.actor.login); // Debugowanie
-              return event.actor.login === 'p-zywczak'; // Zastąp 'test' odpowiednim loginem
+              return event.actor.login === 'p-zywczak';
             } else {
-              console.log('Event without actor:', event); // Debugowanie w przypadku braku actor
-              return false; // Ignoruj wydarzenia bez actor
+              return false;
             }
           });
+          console.log(userEvents);
           events.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
           requiredLabels.forEach(label => {
