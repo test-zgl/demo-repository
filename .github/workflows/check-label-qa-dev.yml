@@ -39,19 +39,11 @@ jobs:
             repo,
             issue_number: prNumber,
           });
-          const userEvents = events.data.filter(event => {
-            if (event.actor && event.actor.login) {
-              return event.actor.login === context.actor;
-            } else {
-              return false;
-            }
-          });
-          console.log(events.data);
           events.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
           requiredLabels.forEach(label => {
-            const labelAddEvent = events.data.find(event => event.event === 'labeled' && event.label.name === label);
-            const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === label);
+            const labelAddEvent = events.data.find(event => event.event === 'labeled' && event.label.name === label && event.actor.login === context.actor);
+            const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === label && event.actor.login === context.actor);
             console.log('label', labelAddEvent.actor.login);
             console.log('context', context.payload.pull_request.user.login);
             if (labelAddEvent && labelAddEvent.actor.login === context.payload.pull_request.user.login) {
