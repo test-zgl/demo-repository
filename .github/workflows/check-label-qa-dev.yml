@@ -15,7 +15,7 @@ jobs:
         script: |
           const prLabels = context.payload.pull_request.labels;
 
-          const hasDocumentationLabel = prLabels.some(label => label.name === 'DOCUMENTATION' || label.name === 'NOT DOCUMENTATION');
+          const hasDocumentationLabel = prLabels.some(label => label.name === 'Documentation' || label.name === 'Not Documentation');
           if (!hasDocumentationLabel) {
             core.setFailed('PR musi mieć etykietę DOCUMENTATION lub NOT DOCUMENTATION.');
           }
@@ -43,9 +43,7 @@ jobs:
 
           requiredLabels.forEach(label => {
             const labelAddEvent = events.data.find(event => event.event === 'labeled' && event.label.name === label && event.actor.login === context.actor);
-            console.log('add', labelAddEvent);
             const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === label && event.actor.login === context.actor);
-            console.log('remove', labelRemoveEvent);
             if (labelAddEvent && labelAddEvent.actor.login === context.payload.pull_request.user.login) {
               if (!labelRemoveEvent || labelAddEvent.created_at > labelRemoveEvent.created_at) {
                 core.setFailed(`Nie można samemu sobie nadać labelki ${label}.`);
