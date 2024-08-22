@@ -46,7 +46,7 @@ jobs:
               return false;
             }
           });
-          console.log(events);
+          console.log(events.data);
           events.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
           requiredLabels.forEach(label => {
