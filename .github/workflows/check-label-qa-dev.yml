@@ -35,9 +35,11 @@ jobs:
           console.log('add', labelAddEvent);
           const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === 'QA Dev');
           console.log('remove', labelRemoveEvent);
-
-          if (labelAddEvent.created_at > labelRemoveEvent.created_at) {
-            core.setFailed('Nie można samemu sobie nadać labelki QA Dev.');
+          if (labelAddEvent.actor.login === context.payload.sender.login) {
+            if (labelAddEvent.created_at > labelRemoveEvent.created_at) {
+              core.setFailed('Nie można samemu sobie nadać labelki QA Dev.');
+            }
           }
+
 
 
