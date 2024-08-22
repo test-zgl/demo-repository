@@ -41,7 +41,7 @@ jobs:
             const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === label);
             if (labelAddEvent && labelAddEvent.actor.login === context.payload.sender.login) {
               if (!labelRemoveEvent || labelAddEvent.created_at > labelRemoveEvent.created_at) {
-                core.setFailed('Nie można samemu sobie nadać labelki ${label}.');
+                core.setFailed(`Nie można samemu sobie nadać labelki ${label}.`);
               }
             }
           });
