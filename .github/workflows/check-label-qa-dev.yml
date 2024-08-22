@@ -39,7 +39,7 @@ jobs:
           requiredLabels.forEach(label => {
             const labelAddEvent = events.data.find(event => event.event === 'labeled' && event.label.name === label);
             const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === label);
-            if (labelAddEvent.actor.login === context.payload.sender.login) {
+            if (labelAddEvent && labelAddEvent.actor.login === context.payload.sender.login) {
               if (labelAddEvent.created_at > labelRemoveEvent.created_at) {
                 core.setFailed('Nie można samemu sobie nadać labelki QA Dev.');
               }
