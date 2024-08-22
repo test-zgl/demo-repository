@@ -17,4 +17,6 @@ jobs:
           tools: composer # Install Composer
       - name: Install dependencies via Composer
         run: composer install
+      - name: Run CS fixer
+        run: composer run-script lint
 
