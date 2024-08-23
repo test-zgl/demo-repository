@@ -3,9 +3,7 @@ name: CI/CD
 on:
   pull_request:
     types: [opened, synchronize]
-  push:
-    branches:
-      - main
+
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
@@ -24,34 +22,3 @@ jobs:
       - name: Run GrumPHP
         run: |
           vendor/bin/grumphp run
-  deploy:
-    name: Deploy To Server
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    needs: build-test-deploy
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install SSH keys
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-
-      - name: Deploy via SSH
-        env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          MAIN_BRANCH: ${{ secrets.MAIN_BRANCH }}
-        run: |
-          ssh $SSH_USER@$SSH_HOST << 'EOF'
-            sudo cd /var/www/demo-repository
-            sudo git config --global --add safe.directory /var/www/demo-repository
-            sudo git checkout $MAIN_BRANCH
-            sudo git pull
-            exit
-          EOF
-
-      - name: Cleanup
-        run: rm -rf ~/.ssh
