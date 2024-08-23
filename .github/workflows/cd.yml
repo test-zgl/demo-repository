@@ -1,4 +1,4 @@
-name: Deploy
+name: CD
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy To Server
+    name: Deploy To Server Dev and Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -30,6 +30,8 @@ jobs:
             sudo git config --global --add safe.directory /var/www/demo-repository
             sudo git checkout $MAIN_BRANCH
             sudo git pull
+            sudo composer install
+            php artisan migrate
             exit
           EOF
 

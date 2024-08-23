@@ -1,11 +1,11 @@
-name: CI/CD
+name: CI
 
 on:
   pull_request:
     types: [opened, synchronize]
 
 jobs:
-  build-test-deploy:
+  build-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
