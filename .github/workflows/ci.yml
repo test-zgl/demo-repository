@@ -39,9 +39,18 @@ jobs:
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
       - name: Deploy via SSH
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          MAIN_BRANCH: ${{ secrets.MAIN_BRANCH }}
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /var/www/demo-repository && git config --global --add safe.directory /var/www/demo-repository
-          && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
+          ssh $SSH_USER@$SSH_HOST << 'EOF'
+            cd /var/www/demo-repository
+            git config --global --add safe.directory /var/www/demo-repository
+            git checkout $MAIN_BRANCH
+            git pull
+            exit
+          EOF
 
       - name: Cleanup
         run: rm -rf ~/.ssh
