@@ -26,7 +26,7 @@ jobs:
           MAIN_BRANCH: ${{ secrets.MAIN_BRANCH }}
         run: |
           ssh $SSH_USER@$SSH_HOST << 'EOF'
-            sudo cd /var/www/demo-repository
+            cd /var/www/demo-repository
             sudo git config --global --add safe.directory /var/www/demo-repository
             sudo git checkout $MAIN_BRANCH
             sudo git pull
