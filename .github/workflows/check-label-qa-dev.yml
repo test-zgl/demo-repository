@@ -25,13 +25,6 @@ jobs:
 
           const requiredLabels = ['QA Dev', 'CR1', 'CR2'];
 
-          const permissions = await github.rest.apps.getRepoInstallation({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-          }).then(response => response.data.permissions);
-  
-          console.log('GITHUB_TOKEN permissions:', permissions);
-
           requiredLabels.forEach(label => {
             const hasLabel = prLabels.some(prLabel => prLabel.name === label);
 
