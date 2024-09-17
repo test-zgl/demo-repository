@@ -7,9 +7,10 @@ on:
 
 jobs:
   check-label:
-    permissions: write-all
-    runs-on: ubuntu-latest
+    permissions:
+      issues: read
 
+    runs-on: ubuntu-latest
     steps:
     - name: Check if PR is targeted to main and has QA Dev label
       uses: actions/github-script@v6
