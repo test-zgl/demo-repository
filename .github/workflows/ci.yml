@@ -4,9 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize]
 
-permissions:
-  issues: write
-  checks: write
+permissions: write-all
 
 jobs:
   build-test:
