@@ -56,9 +56,6 @@ jobs:
               }
             });
 
-            const { owner, repo } = context.repo;
-            const prNumber = context.payload.pull_request.number;
-
             // Pobranie listy wydarzeń związanych z PR
             const events = await github.rest.issues.listEventsForTimeline({
               owner,
