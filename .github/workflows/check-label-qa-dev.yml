@@ -9,6 +9,7 @@ jobs:
   check-label:
     permissions:
       issues: read
+      pull-requests: read
 
     runs-on: ubuntu-latest
     steps:
