@@ -32,7 +32,14 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const prLabels = context.payload.pull_request.labels;
+            const prNumber = context.payload.pull_request.number;
+            const { owner, repo } = context.repo;
+            
+            const { data: prLabels } = await github.rest.issues.listLabelsOnIssue({
+              owner,
+              repo,
+              issue_number: prNumber,
+            });
 
             const hasDocumentationLabel = prLabels.some(label => label.name === 'Documentation' || label.name === 'Not Documentation');
             if (!hasDocumentationLabel) {
