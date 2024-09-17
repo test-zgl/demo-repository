@@ -8,6 +8,23 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     steps:
+      - name: Remove labels CR1 and CR2
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issue_number = context.payload.pull_request.number;
+            const labelsToRemove = ['CR1', 'CR2'];
+            for (const label of labelsToRemove) {
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue_number,
+                  name: label
+                });
+              } catch (error) {
+              }
+            }
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Set up PHP
