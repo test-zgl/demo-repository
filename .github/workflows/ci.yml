@@ -28,6 +28,30 @@ jobs:
               } catch (error) {
               }
             }
+            
+            try {
+              const reviewsResponse = await github.rest.pulls.listReviews({
+                owner,
+                repo,
+                pull_number: issue_number,
+              });
+
+              const reviews = reviewsResponse.data;
+
+              for (const review of reviews) {
+                if (review.state === 'APPROVED') {
+                  await github.rest.pulls.dismissReview({
+                    owner,
+                    repo,
+                    pull_number: issue_number,
+                    review_id: review.id,
+                    message: 'Automatyczne cofnięcie zatwierdzenia.'
+                  });
+                }
+              }
+            } catch (error) {
+              console.error('Błąd podczas cofania recenzji:', error);
+            }
       - name: Check Labels
         uses: actions/github-script@v6
         with:
