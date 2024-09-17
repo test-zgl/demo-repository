@@ -4,11 +4,10 @@ on:
   pull_request:
     types: [labeled, unlabeled, synchronize, opened, ready_for_review]
 
-permissions:
-  issues: read
 
 jobs:
   check-label:
+    permissions: write-all
     runs-on: ubuntu-latest
 
     steps:
