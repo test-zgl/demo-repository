@@ -16,6 +16,9 @@ jobs:
         with:
           script: |
             const issue_number = context.payload.pull_request.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+      
             const labelsToRemove = ['CR1', 'CR2'];
             for (const label of labelsToRemove) {
               try {
