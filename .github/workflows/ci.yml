@@ -27,6 +27,47 @@ jobs:
               } catch (error) {
               }
             }
+      - name: Check Labels
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const prLabels = context.payload.pull_request.labels;
+
+            const hasDocumentationLabel = prLabels.some(label => label.name === 'Documentation' || label.name === 'Not Documentation');
+            if (!hasDocumentationLabel) {
+              core.setFailed('PR musi mieć etykietę DOCUMENTATION lub NOT DOCUMENTATION.');
+            }
+
+            const requiredLabels = ['QA Dev', 'CR1', 'CR2'];
+
+            requiredLabels.forEach(label => {
+              const hasLabel = prLabels.some(prLabel => prLabel.name === label);
+
+              if (!hasLabel) {
+                core.setFailed(`PR nie ma wymaganej etykiety ${label}.`);
+              }
+            });
+
+            const { owner, repo } = context.repo;
+            const prNumber = context.payload.pull_request.number;
+
+            // Pobranie listy wydarzeń związanych z PR
+            const events = await github.rest.issues.listEventsForTimeline({
+              owner,
+              repo,
+              issue_number: prNumber,
+            });
+            events.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+            requiredLabels.forEach(label => {
+              const labelAddEvent = events.data.find(event => event.event === 'labeled' && event.label.name === label && event.actor.login === context.actor);
+              const labelRemoveEvent = events.data.find(event => event.event === 'unlabeled' && event.label.name === label && event.actor.login === context.actor);
+              if (labelAddEvent && labelAddEvent.actor.login === context.payload.pull_request.user.login) {
+                if (!labelRemoveEvent || labelAddEvent.created_at > labelRemoveEvent.created_at) {
+                  core.setFailed(`Nie można samemu sobie nadać labelki ${label}.`);
+                }
+              }
+            });
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Set up PHP
