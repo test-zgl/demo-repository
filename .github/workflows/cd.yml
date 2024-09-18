@@ -13,27 +13,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install SSH keys
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-
       - name: Deploy via SSH
-        env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          MAIN_BRANCH: ${{ secrets.MAIN_BRANCH }}
-        run: |
-          ssh $SSH_USER@$SSH_HOST << 'EOF'
-            cd /var/www/demo-repository
-            sudo git config --global --add safe.directory /var/www/demo-repository
-            sudo git checkout $MAIN_BRANCH
-            sudo git pull
-            sudo composer install
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/test/demo-repository
+            git checkout ${{ secrets.MAIN_BRANCH }}
+            git pull
+            composer install
             php artisan migrate
-            exit
-          EOF
 
       - name: Cleanup
         run: rm -rf ~/.ssh

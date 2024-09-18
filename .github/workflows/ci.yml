@@ -10,7 +10,7 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Remove labels CR1 and CR2
+      - name: Remove labels, approve CR1 and CR2
         if: ${{ github.event_name != 'pull_request' || (github.event.action != 'labeled' && github.event.action != 'unlabeled') }}
         uses: actions/github-script@v6
         with:
