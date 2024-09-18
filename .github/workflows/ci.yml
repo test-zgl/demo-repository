@@ -10,11 +10,12 @@ on:
 permissions: write-all
 
 jobs:
-  ci_cd:
+  ContinuousIntegration:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Remove labels, approve CR1 and CR2
-        if: github.event_name == 'pull_request' && (github.event.action != 'labeled' && github.event.action != 'unlabeled')
+        if: ${{ github.event_name != 'pull_request' || (github.event.action != 'labeled' && github.event.action != 'unlabeled') }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -58,9 +59,7 @@ jobs:
             } catch (error) {
               console.error('Błąd podczas cofania recenzji:', error);
             }
-
       - name: Check Labels
-        if: github.event_name == 'pull_request'
         uses: actions/github-script@v6
         with:
           script: |
@@ -105,33 +104,30 @@ jobs:
                 }
               }
             });
-
       - name: Checkout repository
-        if: github.event_name == 'pull_request'
         uses: actions/checkout@v3
-
       - name: Set up PHP
-        if: github.event_name == 'pull_request'
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           tools: composer
-
       - name: Install dependencies via Composer
-        if: github.event_name == 'pull_request'
         run: composer install
-
       - name: Run cs fixer
-        if: github.event_name == 'pull_request'
         run: composer run-script lint
-
       - name: Run GrumPHP
-        if: github.event_name == 'pull_request'
         run: |
           vendor/bin/grumphp run
 
-      - name: Deploy to Server Dev and Pre
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  Deploy:
+    name: Deploy To Server Dev and Pre
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.5
         with:
           host: ${{ secrets.SSH_HOST }}
