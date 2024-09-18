@@ -121,6 +121,7 @@ jobs:
   deploy:
     name: Deploy To Server Dev and Pre
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
