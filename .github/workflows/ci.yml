@@ -3,6 +3,9 @@ name: CI
 on:
   pull_request:
     types: [labeled, unlabeled, opened, synchronize]
+  push:
+    branches:
+      - main
 
 permissions: write-all
 
@@ -114,3 +117,24 @@ jobs:
       - name: Run GrumPHP
         run: |
           vendor/bin/grumphp run
+
+  deploy:
+    name: Deploy To Server Dev and Pre
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/test/demo-repository
+            git checkout ${{ secrets.MAIN_BRANCH }}
+            git pull
+            composer install
+            php artisan migrate
+            php artisan config:clear
