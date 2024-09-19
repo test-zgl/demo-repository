@@ -35,11 +35,14 @@ jobs:
     name: Await Approval
     needs: deploy-to-pre
     runs-on: ubuntu-latest
-    environment:
-      name: pre
     steps:
-      - name: Waiting for approval
-        run: echo "Czekam na zatwierdzenie..."
+      - name: Request Approval
+        uses: peter-evans/workflow-approval@v1
+        with:
+          reviewers: pzyw-msoft
+          timeout: 43200
+          message: |
+            Proszę zatwierdzić wdrożenie na produkcję.
 
   merge-and-tag:
     name: Merge to Main and Tag
