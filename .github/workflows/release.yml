@@ -34,7 +34,7 @@ jobs:
 
   wait-for-approval:
     name: Await Approval
-    needs: deploy-to-test
+    needs: deploy-to-pre
     runs-on: ubuntu-latest
     environment:
       name: pre
