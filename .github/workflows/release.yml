@@ -5,8 +5,7 @@ on:
     branches:
       - 'release/**'
 
-permissions:
-  contents: write
+permissions: write-all
 
 jobs:
   deploy-to-pre:
@@ -45,8 +44,8 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
-          base: ${{ github.ref_name }}
+          base: main
+          branch: ${{ github.ref }}
           title: "Merge release/${{ github.ref_name }} into main"
           body: |
             Automatyczne PR z gałęzi `release/${{ github.ref_name }}` do `main` po wdrożeniu na serwer pre.
