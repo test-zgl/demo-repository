@@ -31,39 +31,20 @@ jobs:
             php artisan migrate
             php artisan config:clear
 
-  wait-for-approval:
-    name: Await Approval
+  create-pull-request:
+    name: Create Pull Request to Main
     needs: deploy-to-pre
     runs-on: ubuntu-latest
     steps:
-      - name: Request Approval
-        uses: peter-evans/workflow-approval@v1
-        with:
-          reviewers: pzyw-msoft
-          timeout: 43200
-          message: |
-            Proszę zatwierdzić wdrożenie na produkcję.
-
-  merge-and-tag:
-    name: Merge to Main and Tag
-    needs: wait-for-approval
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout main branch
+      - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
         with:
-          ref: 'main'
-          fetch-depth: 0
-
-      - name: Merge release branch into main
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git merge --no-ff ${{ github.ref }} -m "Merge ${GITHUB_REF} into main"
-          git push origin main
-
-      - name: Create Tag on main
-        run: |
-          VERSION=${GITHUB_REF#refs/heads/release/}
-          git tag "v$VERSION"
-          git push origin "v$VERSION"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          source: ${{ github.ref_name }}
+          target: main
+          title: "Merge release/${{ github.ref_name }} into main"
+          body: |
+            Automatyczne PR z gałęzi `release/${{ github.ref_name }}` do `main` po wdrożeniu na serwer pre.
