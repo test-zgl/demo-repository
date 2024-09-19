@@ -38,12 +38,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref_name }}
+          base: main
           title: "Merge release/${{ github.ref_name }} into main"
           body: |
             Automatyczne PR z gałęzi `release/${{ github.ref_name }}` do `main` po wdrożeniu na serwer pre.
