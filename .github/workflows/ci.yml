@@ -12,7 +12,10 @@ permissions: write-all
 jobs:
   ci_cd:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.ref == 'develop' && github.event.pull_request.base.ref != 'main'
+    if: >
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.base.ref == 'develop' &&
+      github.event.pull_request.head.ref != 'main'
     steps:
       - name: Remove labels, approve CR1 and CR2
         if: github.event_name == 'pull_request' && (github.event.action != 'labeled' && github.event.action != 'unlabeled')
