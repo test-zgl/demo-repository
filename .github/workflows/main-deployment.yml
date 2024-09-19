@@ -12,6 +12,7 @@ jobs:
   create-tag:
     name: Create Tag on Main
     runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'release/')
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v3
@@ -30,7 +31,6 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Create Tag on Main
-        if: contains(github.event.head_commit.message, 'release/')
         run: |
           git tag "v${{ env.VERSION }}"
           git push origin "v${{ env.VERSION }}"
