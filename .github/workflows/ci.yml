@@ -135,7 +135,7 @@ jobs:
           vendor/bin/grumphp run
 
       - name: Deploy to Server Dev and Pre
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         uses: appleboy/ssh-action@v0.1.5
         with:
           host: ${{ secrets.SSH_HOST }}
