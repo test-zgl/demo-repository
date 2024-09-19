@@ -40,3 +40,27 @@ jobs:
     steps:
       - name: Waiting for approval
         run: echo "Czekam na zatwierdzenie..."
+
+  merge-and-tag:
+    name: Merge to Main and Tag
+    needs: wait-for-approval
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: 'main'
+          fetch-depth: 0
+
+      - name: Merge release branch into main
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git merge --no-ff ${{ github.ref }} -m "Merge ${GITHUB_REF} into main"
+          git push origin main
+
+      - name: Create Tag on main
+        run: |
+          VERSION=${GITHUB_REF#refs/heads/release/}
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
