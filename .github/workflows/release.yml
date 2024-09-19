@@ -49,3 +49,4 @@ jobs:
           title: "Merge release/${{ github.ref_name }} into main"
           body: |
             Automatyczne PR z gałęzi `release/${{ github.ref_name }}` do `main` po wdrożeniu na serwer pre.
+          label: release
