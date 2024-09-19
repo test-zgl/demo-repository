@@ -31,3 +31,13 @@ jobs:
             composer install
             php artisan migrate
             php artisan config:clear
+
+  wait-for-approval:
+    name: Await Approval
+    needs: deploy-to-test
+    runs-on: ubuntu-latest
+    environment:
+      name: pre
+    steps:
+      - name: Waiting for approval
+        run: echo "Czekam na zatwierdzenie..."
