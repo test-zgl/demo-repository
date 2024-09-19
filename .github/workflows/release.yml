@@ -23,7 +23,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            set -e
             cd /var/www/test/demo-repository-1
             git fetch
             git checkout ${{ github.ref_name }}
