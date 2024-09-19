@@ -12,7 +12,7 @@ jobs:
   create-tag:
     name: Create Tag on Main
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'release/')
+    if: contains(github.event.head_commit.message, 'release/') || contains(github.event.head_commit.message, 'hotfix/')
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v3
@@ -23,7 +23,7 @@ jobs:
       - name: Extract Version from Commit Message
         id: extract_version
         run: |
-          VERSION=$(git log -1 --pretty=%B | grep -oP 'release/\K[0-9]+\.[0-9]+')
+          VERSION=$(git log -1 --pretty=%B | grep -oP '(release|hotfix)/\K[0-9]+\.[0-9]+(\.[0-9]+)?')
           if [ -z "$VERSION" ]; then
             echo "Version not found in commit message."
             exit 1
