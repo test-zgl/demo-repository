@@ -5,7 +5,7 @@ on:
     types: [labeled, unlabeled, opened, synchronize]
   push:
     branches:
-      - main
+      - develop
 
 permissions: write-all
 
