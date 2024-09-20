@@ -35,6 +35,16 @@ jobs:
           git tag "v${VER}"
           git push origin "v${VER}"
 
+      - name: Hotfix merge to develop
+        if: contains(github.event.head_commit.message, 'hotfix/')
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git checkout develop
+          git pull origin develop
+          git merge main --no-ff -m "Merge main into develop after hotfix v${{ env.VER }}"
+          git push origin develop
+
       - name: Deploy to Prod Server via SSH
         uses: appleboy/ssh-action@v0.1.5
         with:
@@ -46,13 +56,13 @@ jobs:
             git fetch --tags
             git checkout main
             git pull
-            git checkout "v${VER}"
+            git checkout "v${{ env.VER }}"
             composer install
             php artisan migrate
             php artisan config:clear
       - name: Debug Version
         run: | 
-          echo "Version extracted: v${{ env.VERSION }}"
+          echo "Version extracted: v${VER}"
 
       - name: Deploy to Demo Server via SSH
         uses: appleboy/ssh-action@v0.1.5
