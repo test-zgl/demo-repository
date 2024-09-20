@@ -46,7 +46,7 @@ jobs:
             git fetch --tags
             git checkout main
             git pull
-            git checkout "v${VER}"
+            git checkout "v${{ env.VER }}"
             composer install
             php artisan migrate
             php artisan config:clear
