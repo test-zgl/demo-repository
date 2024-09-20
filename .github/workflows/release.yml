@@ -46,8 +46,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
           branch: ${{ github.ref }}
-          title: "Merge release/${{ github.ref_name }} into main 1"
-          commit-message: "Merge release/${{ github.ref_name }} into main 12"
+          title: "Merge ${{ github.ref_name }} into main"
           body: |
             Automatyczne PR z gałęzi `release/${{ github.ref_name }}` do `main` po wdrożeniu na serwer pre.
           label: release
