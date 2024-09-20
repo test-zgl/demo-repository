@@ -28,7 +28,8 @@ jobs:
           echo "Version not found in commit message."
           exit 1
           fi
-          echo "VER=${VERSION}" >> $GITHUB_ENV
+          echo "Extracted VERSION: $VERSION"
+          echo "VER=$VERSION" >> $GITHUB_ENV
 
       - name: Create Tag on Main
         run: |
