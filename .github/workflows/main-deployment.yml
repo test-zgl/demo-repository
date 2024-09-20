@@ -50,6 +50,9 @@ jobs:
             composer install
             php artisan migrate
             php artisan config:clear
+      - name: Debug Version
+        run: | 
+          echo "Version extracted: v${{ env.VERSION }}"
 
       - name: Deploy to Demo Server via SSH
         uses: appleboy/ssh-action@v0.1.5
@@ -62,7 +65,7 @@ jobs:
             git fetch --tags
             git checkout main
             git pull
-            git checkout "v${VER}"
+            git checkout "${{ env.VERSION }}"
             composer install
             php artisan migrate
             php artisan config:clear
