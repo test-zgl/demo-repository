@@ -60,11 +60,30 @@ jobs:
             composer install
             php artisan migrate
             php artisan config:clear
-            
-      - name: Notify Microsoft Teams
-        if: contains(github.event.head_commit.message, 'release/')
-        uses: Ilshidur/action-slack@v2
+
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: always()
         with:
-          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK_URL }}
-          message: "TEST - New release v${VER} has been created and deployed to production."
-          title: "Release Notification"
+            webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+            raw: >-
+              {
+                  "type": "message",
+                  "attachments":
+                  [
+                      {
+                          "contentType": "application/vnd.microsoft.card.adaptive",
+                          "content":
+                          {
+                              "type": "AdaptiveCard",
+                              "body":
+                              [
+                                  {
+                                      "type": "TextBlock",
+                                      "text": "Test title text"
+                                  }
+                              ]
+                          }
+                      }
+                  ]
+              }
