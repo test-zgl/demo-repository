@@ -23,13 +23,11 @@ jobs:
       - name: Extract Version from Commit Message
         id: extract_version
         run: |
-          echo "SKRYPT: $(git log -1 --pretty=%B)"
-          VERSION=$(git log -1 --pretty=%B | grep -oP '(release|hotfix)/\K[0-9]+\.[0-9]+(\.[0-9]+)?' | tr -d '[:space:]')
+          VERSION=$(git log -1 --pretty=%B | grep -oP '(release|hotfix)/\K[0-9]+\.[0-9]+(\.[0-9]+)?' | head -n 1 | tr -d '[:space:]')
           if [ -z "$VERSION" ]; then
           echo "Version not found in commit message."
           exit 1
           fi
-          echo "TEST: $VERSION"
           echo "VER=$VERSION" >> $GITHUB_ENV
 
       - name: Create Tag on Main
