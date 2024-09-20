@@ -29,7 +29,8 @@ jobs:
           exit 1
           fi
           echo "Extracted VERSION: $VERSION"
-          echo "VER=1.0.35" >> $GITHUB_ENV
+          echo "VER= $VERSION "
+          echo "VER= $VERSION " >> $GITHUB_ENV
 
       - name: Create Tag on Main
         run: |
