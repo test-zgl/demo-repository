@@ -52,7 +52,7 @@ jobs:
             php artisan config:clear
       - name: Debug Version
         run: | 
-          echo "Version extracted: v${{ env.VERSION }}"
+          echo "Version extracted: v${VER}"
 
       - name: Deploy to Demo Server via SSH
         uses: appleboy/ssh-action@v0.1.5
