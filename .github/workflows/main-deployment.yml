@@ -34,3 +34,19 @@ jobs:
         run: |
           git tag "v${VER}"
           git push origin "v${VER}"
+
+      - name: Deploy to Prod Server via SSH
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/test/demo-repository-2
+            git fetch --tags
+            git checkout main
+            git pull
+            git checkout "${VER}"
+            composer install
+            php artisan migrate
+            php artisan config:clear
