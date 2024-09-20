@@ -23,7 +23,7 @@ jobs:
       - name: Extract Version from Commit Message
         id: extract_version
         run: |
-          echo "VERSION=1.20.1" >> $GITHUB_OUTPUT
+          echo "VERSION=1.20.1" >> $GITHUB_ENV
 
       - name: Create Tag on Main
         run: |
