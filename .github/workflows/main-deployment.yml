@@ -60,22 +60,11 @@ jobs:
             composer install
             php artisan migrate
             php artisan config:clear
-      - name: Debug Version
-        run: | 
-          echo "Version extracted: v${VER}"
-
-      - name: Deploy to Demo Server via SSH
-        uses: appleboy/ssh-action@v0.1.5
+            
+      - name: Notify Microsoft Teams
+        if: contains(github.event.head_commit.message, 'release/')
+        uses: Ilshidur/action-slack@v2
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /var/www/test/demo-repository-3
-            git fetch --tags
-            git checkout main
-            git pull
-            git checkout "${{ env.VERSION }}"
-            composer install
-            php artisan migrate
-            php artisan config:clear
+          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK_URL }}
+          message: "TEST - New release v${VER} has been created and deployed to production."
+          title: "Release Notification"
