@@ -80,11 +80,35 @@ jobs:
                           "body":
                             [
                               {
-                                "type": "TextBlock",
-                                "text": "Release v${{ env.VER }}",
-                                "weight": "Bolder",
-                                "size": "Large",
-                                "color": "Good"
+                                "type": "ColumnSet",
+                                "columns": [
+                                  {
+                                    "type": "Column",
+                                    "width": "stretch",
+                                    "items": [
+                                      {
+                                        "type": "TextBlock",
+                                        "text": "BACKEND Release v${{ env.VER }}",
+                                        "weight": "Bolder",
+                                        "size": "Large",
+                                        "color": "Good"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Column",
+                                    "width": "auto",
+                                    "items": [
+                                      {
+                                        "type": "Image",
+                                        "url": "https://img.icons8.com/color/48/000000/checked--v1.png",
+                                        "size": "Small",
+                                        "horizontalAlignment": "Right",
+                                        "altText": "Zielona Fajka"
+                                      }
+                                    ]
+                                  }
+                                ]
                               },
                               {
                                 "type": "TextBlock",
@@ -93,11 +117,39 @@ jobs:
                                 "size": "Medium"
                               },
                               {
-                                "type": "Image",
-                                "url": "https://img.icons8.com/color/48/000000/checked--v1.png",
+                                "type": "TextBlock",
+                                "text": "Data i czas release: ${{ env.RELEASE_DATE }}",
+                                "wrap": true,
                                 "size": "Small",
-                                "horizontalAlignment": "Left",
-                                "altText": "Zielona Fajka"
+                                "color": "Accent"
+                              },
+                              {
+                                  "type": "ActionSet",
+                                  "actions": [
+                                      {
+                                          "type": "Action.ToggleVisibility",
+                                          "title": "Changelog",
+                                          "targetElements": ["changelogContainer"]
+                                      }
+                                  ]
+                              },
+                              {
+                                  "type": "Container",
+                                  "id": "changelogContainer",
+                                  "isVisible": false,
+                                  "items": [
+                                      {
+                                          "type": "TextBlock",
+                                          "text": "Changelog:",
+                                          "weight": "Bolder",
+                                          "size": "Medium"
+                                      },
+                                      {
+                                          "type": "TextBlock",
+                                          "text": "• Feature A added\n• Bug B fixed\n• Improvement C made",
+                                          "wrap": true
+                                      }
+                                  ]
                               }
                             ],
                           "actions": []
