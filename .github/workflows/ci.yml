@@ -87,7 +87,7 @@ jobs:
                               "text": "<at>${{ vars.MS_TEAMS_GROUP }}</at>",
                               "mentioned": {
                                 "id": "${{ secrets.MS_TEAMS_GROUP_ID }}",
-                                "name": "@${{ vars.MS_TEAMS_GROUP }}"
+                                "name": "${{ vars.MS_TEAMS_GROUP }}"
                               }
                             }
                           ]
