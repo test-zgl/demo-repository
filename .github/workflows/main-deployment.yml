@@ -107,7 +107,7 @@ jobs:
                                     "items": [
                                       {
                                         "type": "TextBlock",
-                                        "text": "${{ vars. ENVIRONMENT }} Release v${{ env.VER }}",
+                                        "text": "${{ vars.ENVIRONMENT }} Release v${{ env.VER }}",
                                         "weight": "Bolder",
                                         "size": "Large",
                                         "color": "Good"
