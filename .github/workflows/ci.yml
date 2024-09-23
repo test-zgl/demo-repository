@@ -26,7 +26,7 @@ jobs:
     steps:
       - name: Microsoft Teams Notification
         uses: skitionek/notify-microsoft-teams@master
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK_PR }}
           raw: >-
@@ -64,7 +64,7 @@ jobs:
                                   "items": [
                                     {
                                       "type": "Image",
-                                      "url": "https://img.icons8.com/color/48/000000/checked--v1.png",
+                                      "url": "https://img.icons8.com/?size=100&id=33282&format=png&color=000000",
                                       "size": "Small",
                                       "horizontalAlignment": "Right",
                                       "altText": "Zielona Fajka"
