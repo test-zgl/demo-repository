@@ -39,7 +39,7 @@ jobs:
                     "content":
                       {
                         "type": "AdaptiveCard",
-                        "version": "1.2",
+                        "version": "1.5",
                         "body":
                           [
                             {
