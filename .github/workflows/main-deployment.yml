@@ -137,7 +137,7 @@ jobs:
                               },
                               {
                                 "type": "TextBlock",
-                                "text": "Data i czas release: $(date -u +"%Y-%m-%d %H:%M:%S UTC")",
+                                "text": "Data i czas release: 2024.09",
                                 "wrap": true,
                                 "size": "Small",
                                 "color": "Accent"
