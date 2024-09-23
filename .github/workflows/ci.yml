@@ -79,20 +79,7 @@ jobs:
                               "wrap": true,
                               "size": "Medium"
                             }
-
                           ],
-                          "msteams": {
-                            "entities": [
-                              {
-                                "type": "mention",
-                                "text": "@${{ vars.MS_TEAMS_GROUP }}",
-                                "mentioned": 
-                                  {
-                                    "name": "${{ vars.MS_TEAMS_GROUP }}"
-                                  }
-                              }
-                            ]
-                          },
                         "actions": []
                       }
                   }
