@@ -77,23 +77,23 @@ jobs:
                               "type": "TextBlock",
                               "text": "<at>${{ vars.MS_TEAMS_GROUP }}</at> prośba o cr ${{ github.event.pull_request.html_url }}",
                               "wrap": true,
-                              "size": "Medium",
-                              "msteams": 
-                                {
-                                  "entities": 
-                                    [
-                                      {
-                                        "type": "mention",
-                                        "text": "<at>${{ vars.MS_TEAMS_GROUP }}</at>",
-                                        "mentioned": { 
-                                          "id": "${{ secrets.MS_TEAMS_GROUP_ID }}",
-                                          "name": "${{ vars.MS_TEAMS_GROUP }}" 
-                                        }
-                                       }
-                                    ]
-                                }
+                              "size": "Medium"
                             }
                           ],
+                        "msteams": 
+                        {
+                          "entities": 
+                            [
+                              {
+                                "type": "mention",
+                                "text": "<at>${{ vars.MS_TEAMS_GROUP }}</at>",
+                                "mentioned": { 
+                                 "id": "${{ secrets.MS_TEAMS_GROUP_ID }}",
+                                 "name": "${{ vars.MS_TEAMS_GROUP }}" 
+                                }
+                              }
+                            ]
+                        },                                }
                         "actions": []
                       }
                   }
