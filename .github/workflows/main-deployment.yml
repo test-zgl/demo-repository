@@ -61,21 +61,21 @@ jobs:
             php artisan migrate
             php artisan config:clear
 
+      - name: Get current date
+        id: get_date
+        run: echo "RELEASE_DATE=$(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_ENV
+
       - name: Generate Changelog
         id: generate_changelog
         run: |
-          # Pobierz ostatni tag
           LAST_TAG=$(git describe --tags --abbrev=0)
           
-          # Pobierz commit messages między ostatnim tagiem a obecnym commitem
           CHANGELOG=$(git log ${LAST_TAG}..HEAD --pretty=format:"• %s")
           
-          # Sprawdź, czy changelog nie jest pusty
           if [ -z "$CHANGELOG" ]; then
             CHANGELOG="• Brak zmian."
           fi
           
-          # Eksportuj changelog jako zmienną środowiskową
           echo "CHANGELOG<<EOF" >> $GITHUB_ENV
           echo "$CHANGELOG" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -137,7 +137,7 @@ jobs:
                               },
                               {
                                 "type": "TextBlock",
-                                "text": "Data i czas release: 2024.09",
+                                "text": "Data i czas release: {{ env.RELEASE_DATE }}",
                                 "wrap": true,
                                 "size": "Small",
                                 "color": "Accent"
