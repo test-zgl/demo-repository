@@ -80,7 +80,7 @@ jobs:
                                       "id": "${{ secrets.MS_TEAMS_GROUP_ID }}",
                                       "name": "${{ vars.MS_TEAMS_GROUP }}", 
                                       "type": "tag" 
-                              } 
+                              },
                               "wrap": true,
                               "size": "Medium"
                             }
