@@ -63,7 +63,8 @@ jobs:
 
       - name: Get current date
         id: get_date
-        run: echo "RELEASE_DATE=$(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_ENV
+        run: |
+          TZ="Europe/Warsaw" date "+RELEASE_DATE=%Y-%m-%d %H:%M:%S %Z" >> $GITHUB_ENV
 
       - name: Generate Changelog
         id: generate_changelog
