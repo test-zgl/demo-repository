@@ -61,6 +61,25 @@ jobs:
             php artisan migrate
             php artisan config:clear
 
+      - name: Generate Changelog
+        id: generate_changelog
+        run: |
+          # Pobierz ostatni tag
+          LAST_TAG=$(git describe --tags --abbrev=0)
+          
+          # Pobierz commit messages między ostatnim tagiem a obecnym commitem
+          CHANGELOG=$(git log ${LAST_TAG}..HEAD --pretty=format:"• %s")
+          
+          # Sprawdź, czy changelog nie jest pusty
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="• Brak zmian."
+          fi
+          
+          # Eksportuj changelog jako zmienną środowiskową
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$CHANGELOG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Microsoft Teams Notification
         uses: skitionek/notify-microsoft-teams@master
         if: always()
@@ -88,7 +107,7 @@ jobs:
                                     "items": [
                                       {
                                         "type": "TextBlock",
-                                        "text": "BACKEND Release v${{ env.VER }}",
+                                        "text": "${{ vars. ENVIRONMENT }} Release v${{ env.VER }}",
                                         "weight": "Bolder",
                                         "size": "Large",
                                         "color": "Good"
@@ -118,7 +137,7 @@ jobs:
                               },
                               {
                                 "type": "TextBlock",
-                                "text": "Data i czas release: ${{ env.RELEASE_DATE }}",
+                                "text": "Data i czas release: $(date -u +"%Y-%m-%d %H:%M:%S UTC")",
                                 "wrap": true,
                                 "size": "Small",
                                 "color": "Accent"
@@ -146,7 +165,7 @@ jobs:
                                       },
                                       {
                                           "type": "TextBlock",
-                                          "text": "• Feature A added\n• Bug B fixed\n• Improvement C made",
+                                          "text": "${{ env.CHANGELOG }}",
                                           "wrap": true
                                       }
                                   ]
