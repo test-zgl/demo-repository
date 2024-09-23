@@ -77,7 +77,7 @@ jobs:
                               "type": "TextBlock",
                               "text": "<at>${{ vars.MS_TEAMS_GROUP }}</at> prośba o cr ${{ github.event.pull_request.html_url }}",
                               "wrap": true,
-                              "size": "Medium"
+                              "size": "Medium",
                               "msteams": {
                                 "entities": [
                                   {
