@@ -137,7 +137,7 @@ jobs:
                               },
                               {
                                 "type": "TextBlock",
-                                "text": "Data i czas release: {{ env.RELEASE_DATE }}",
+                                "text": "Data i czas release: ${{ env.RELEASE_DATE }}",
                                 "wrap": true,
                                 "size": "Small",
                                 "color": "Accent"
