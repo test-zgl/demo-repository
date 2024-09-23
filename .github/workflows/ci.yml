@@ -24,6 +24,69 @@ jobs:
       (github.event_name == 'push' &&
         github.ref == 'refs/heads/develop')
     steps:
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: github.event_name == 'pull_request'
+        with:
+          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK_PR }}
+          raw: >-
+            {
+              "type": "message",
+              "attachments":
+                [
+                  {
+                    "contentType": "application/vnd.microsoft.card.adaptive",
+                    "content":
+                      {
+                        "type": "AdaptiveCard",
+                        "version": "1.2",
+                        "body":
+                          [
+                            {
+                              "type": "ColumnSet",
+                              "columns": [
+                                {
+                                  "type": "Column",
+                                  "width": "stretch",
+                                  "items": [
+                                    {
+                                      "type": "TextBlock",
+                                      "text": "${{ github.event.pull_request.title }}",
+                                      "weight": "Bolder",
+                                      "size": "Large",
+                                      "color": "Good"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "Column",
+                                  "width": "auto",
+                                  "items": [
+                                    {
+                                      "type": "Image",
+                                      "url": "https://img.icons8.com/color/48/000000/checked--v1.png",
+                                      "size": "Small",
+                                      "horizontalAlignment": "Right",
+                                      "altText": "Zielona Fajka"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "TextBlock",
+                              "text": "${{ vars.MS_TEAMS_GROUP }} prośba o cr ${{ github.event.pull_request.html_url }}",
+                              "wrap": true,
+                              "size": "Medium"
+                            },
+
+                          ],
+                        "actions": []
+                      }
+                  }
+                ]
+            }
+
       - name: Remove labels, approve CR1 and CR2
         if: github.event_name == 'pull_request' && (github.event.action != 'labeled' && github.event.action != 'unlabeled')
         uses: actions/github-script@v6
@@ -163,65 +226,3 @@ jobs:
             php artisan migrate
             php artisan config:clear
 
-      - name: Microsoft Teams Notification
-        uses: skitionek/notify-microsoft-teams@master
-        if: github.event_name == 'pull_request'
-        with:
-          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK_PR }}
-          raw: >-
-            {
-              "type": "message",
-              "attachments":
-                [
-                  {
-                    "contentType": "application/vnd.microsoft.card.adaptive",
-                    "content":
-                      {
-                        "type": "AdaptiveCard",
-                        "version": "1.2",
-                        "body":
-                          [
-                            {
-                              "type": "ColumnSet",
-                              "columns": [
-                                {
-                                  "type": "Column",
-                                  "width": "stretch",
-                                  "items": [
-                                    {
-                                      "type": "TextBlock",
-                                      "text": "${{ github.event.pull_request.title }}",
-                                      "weight": "Bolder",
-                                      "size": "Large",
-                                      "color": "Good"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "type": "Column",
-                                  "width": "auto",
-                                  "items": [
-                                    {
-                                      "type": "Image",
-                                      "url": "https://img.icons8.com/color/48/000000/checked--v1.png",
-                                      "size": "Small",
-                                      "horizontalAlignment": "Right",
-                                      "altText": "Zielona Fajka"
-                                    }
-                                  ]
-                                }
-                              ]
-                            },
-                            {
-                              "type": "TextBlock",
-                              "text": "${{ vars.MS_TEAMS_GROUP }} prośba o cr ${{ github.event.pull_request.html_url }}",
-                              "wrap": true,
-                              "size": "Medium"
-                            },
-                            
-                          ],
-                        "actions": []
-                      }
-                  }
-                ]
-            }
