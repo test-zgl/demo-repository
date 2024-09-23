@@ -78,7 +78,7 @@ jobs:
                               "text": "${{ vars.MS_TEAMS_GROUP }} prośba o cr ${{ github.event.pull_request.html_url }}",
                               "wrap": true,
                               "size": "Medium"
-                            },
+                            }
 
                           ],
                         "actions": []
