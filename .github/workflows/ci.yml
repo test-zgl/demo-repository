@@ -54,7 +54,7 @@ jobs:
                                       "text": "${{ github.event.pull_request.title }}",
                                       "weight": "Bolder",
                                       "size": "Large",
-                                      "color": "Good"
+                                      "color": "Accent"
                                     }
                                   ]
                                 },
