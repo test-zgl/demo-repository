@@ -142,6 +142,8 @@ jobs:
           script: |
             const prNumber = context.payload.pull_request.number;
             const { owner, repo } = context.repo;
+            
+            const prBranch = context.payload.pull_request.head.ref;
             const isHotfixBranch = prBranch.startsWith('hotfix');
             
             const { data: prLabels } = await github.rest.issues.listLabelsOnIssue({
