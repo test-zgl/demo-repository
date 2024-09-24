@@ -35,16 +35,6 @@ jobs:
           git tag "v${VER}"
           git push origin "v${VER}"
 
-      - name: Hotfix merge to develop
-        if: contains(github.event.head_commit.message, 'hotfix/')
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git checkout develop
-          git pull origin develop
-          git merge main --no-ff -m "Merge main into develop after hotfix v${{ env.VER }}"
-          git push origin develop
-
       - name: Deploy to Prod Server via SSH
         uses: appleboy/ssh-action@v0.1.5
         with:
@@ -177,3 +167,13 @@ jobs:
                     }
                   ]
               }
+
+      - name: Hotfix merge to develop
+        if: contains(github.event.head_commit.message, 'hotfix/')
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git checkout develop
+          git pull origin develop
+          git merge main --no-ff -m "Merge main into develop after hotfix v${{ env.VER }}"
+          git push origin develop
