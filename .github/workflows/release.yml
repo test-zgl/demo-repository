@@ -22,11 +22,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/test/demo-repository-1
+            cd /var/www/api-pre.symbionis.pl
             git fetch
             git checkout ${{ github.ref_name }}
             git pull
-            composer install
+            composer install --ignore-platform-req=ext-xdebug --ignore-platform-req=ext-ldap
             php artisan migrate
             php artisan config:clear
 
