@@ -230,7 +230,7 @@ jobs:
             cd /var/www/api-dev.symbionis.pl
             git checkout ${{ secrets.MAIN_BRANCH }}
             git pull
-            composer install
+            composer install --ignore-platform-req=ext-xdebug --ignore-platform-req=ext-ldap
             php artisan migrate
             php artisan config:clear
 
