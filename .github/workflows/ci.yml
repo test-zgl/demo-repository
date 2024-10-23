@@ -227,7 +227,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/test/demo-repository
+            cd /var/www/api-dev.symbionis.pl
             git checkout ${{ secrets.MAIN_BRANCH }}
             git pull
             composer install
