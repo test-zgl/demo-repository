@@ -51,6 +51,23 @@ jobs:
             php artisan migrate
             php artisan config:clear
 
+      - name: Deploy to Demo Server via SSH
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/api-demo.symbionis.pl
+            git fetch --tags
+            git checkout main
+            git pull
+            git checkout "v${{ env.VER }}"
+            composer install --ignore-platform-req=ext-xdebug --ignore-platform-req=ext-ldap
+            php artisan migrate
+            php artisan config:clear
+            php artisan db:seed
+
       - name: Get current date
         id: get_date
         run: |
