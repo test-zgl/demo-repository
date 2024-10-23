@@ -213,7 +213,12 @@ jobs:
       - name: Run cs fixer
         if: github.event_name == 'pull_request'
         run: composer run-script lint
-
+        
+      - name: Run test
+        if: github.event_name == 'pull_request'
+        run: |
+          /vendor/bin/phpunit
+          
       - name: Run GrumPHP
         if: github.event_name == 'pull_request'
         run: |
