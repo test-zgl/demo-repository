@@ -23,7 +23,7 @@ jobs:
       - name: Generate Timestamp for Tag
         id: generate_timestamp
         run: |
-          TIMESTAMP=$(date +"%m-%d-%Y %H:%M:%S")
+          TIMESTAMP=$(date +"%m-%d-%Y-%H-%M-%S")
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
 
       - name: Create Tag on Main
