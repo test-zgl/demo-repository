@@ -6,7 +6,9 @@ on:
   push:
     branches:
       - develop
-
+  issue_comment:
+    types: [created]
+    
 permissions: write-all
 
 jobs:
