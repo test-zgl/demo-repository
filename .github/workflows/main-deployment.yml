@@ -54,7 +54,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/api-demo.symbionis.pl
+            cd /var/www/test/demo-repository-2
             git fetch --tags
             git checkout main
             git pull
