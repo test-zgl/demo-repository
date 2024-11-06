@@ -20,10 +20,15 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Generate Timestamp for Tag
-        id: generate_timestamp
+      - name: Extract Timestamp from Branch Name
+        id: extract_timestamp
         run: |
-          TIMESTAMP=$(date +"%m-%d-%Y-%H-%M-%S")
+          BRANCH_NAME=${GITHUB_REF##*/}
+          TIMESTAMP=$(echo "$BRANCH_NAME" | grep -oP 'release/\K.*')
+          if [ -z "$TIMESTAMP" ]; then
+            echo "Timestamp not found in branch name."
+            exit 1
+          fi
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
 
       - name: Create Tag on Main
