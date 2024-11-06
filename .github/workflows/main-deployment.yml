@@ -20,20 +20,15 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Extract Timestamp from Branch Name
-        id: extract_timestamp
+      - name: Extract Version from Commit Message
+        id: extract_version
         run: |
-          BRANCH_NAME="${GITHUB_REF_NAME}"
-          if [ -z "$BRANCH_NAME" ]; then
-            echo "Branch name is empty. Exiting."
-            exit 1
+          VERSION=$(git log -1 --pretty=%B | grep -oP '(release|hotfix)/\K[0-9]{2}-[0-9]{2}-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{2}' | head -n 1 | tr -d '[:space:]')
+          if [ -z "$VERSION" ]; then
+          echo "Version not found in commit message."
+          exit 1
           fi
-          TIMESTAMP=$(echo "$BRANCH_NAME" | grep -oP 'release/\K.*')
-          if [ -z "$TIMESTAMP" ]; then
-            echo "Timestamp not found in branch name."
-            exit 1
-          fi
-          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+          echo "VER=$VERSION" >> $GITHUB_ENV
 
       - name: Create Tag on Main
         run: |
