@@ -232,7 +232,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/api-dev.symbionis.pl
+            cd /var/www/test/demo-repository
             git checkout ${{ secrets.MAIN_BRANCH }}
             git pull
             composer install --ignore-platform-req=ext-xdebug --ignore-platform-req=ext-ldap
