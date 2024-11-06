@@ -32,3 +32,5 @@ jobs:
           base: main
           branch: ${{ github.ref }}
           title: "Merge ${{ github.ref_name }} into main"
+          labels: |
+            RELEASE
