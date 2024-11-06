@@ -31,7 +31,6 @@ jobs:
           git tag "release-${TIMESTAMP}"
           git push origin "release-${TIMESTAMP}"
 
-
       - name: Get current date
         id: get_date
         run: |

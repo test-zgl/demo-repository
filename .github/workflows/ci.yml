@@ -213,7 +213,12 @@ jobs:
       - name: Run cs fixer
         if: github.event_name == 'pull_request'
         run: composer run-script lint
-
+        
+      - name: Run test
+        if: github.event_name == 'pull_request'
+        run: |
+          /vendor/bin/phpunit
+          
       - name: Run GrumPHP
         if: github.event_name == 'pull_request'
         run: |
@@ -230,7 +235,7 @@ jobs:
             cd /var/www/test/demo-repository
             git checkout ${{ secrets.MAIN_BRANCH }}
             git pull
-            composer install
+            composer install --ignore-platform-req=ext-xdebug --ignore-platform-req=ext-ldap
             php artisan migrate
             php artisan config:clear
 
