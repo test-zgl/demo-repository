@@ -23,7 +23,7 @@ jobs:
       - name: Extract Timestamp from Branch Name
         id: extract_timestamp
         run: |
-          BRANCH_NAME=${GITHUB_REF##*/}
+          BRANCH_NAME=${{ github.head_ref }}
           TIMESTAMP=$(echo "$BRANCH_NAME" | grep -oP 'release/\K.*')
           if [ -z "$TIMESTAMP" ]; then
             echo "Timestamp not found in branch name."
