@@ -84,6 +84,13 @@ jobs:
                               "text": "Prośba o cr ${{ github.event.pull_request.html_url }}",
                               "wrap": true,
                               "size": "Medium"
+                            },
+                            {
+                              "type": "TextBlock",
+                              "text": "Twórca PR: ${{ github.event.pull_request.user.login }}",
+                              "wrap": true,
+                              "size": "Medium",
+                              "color": "Good"
                             }
                           ],
                       "msteams": {
