@@ -14,6 +14,21 @@ permissions: write-all
 jobs:
   ci_cd:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: test_password
+          MYSQL_DATABASE: zgloszenia_testing
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     if: >
       (github.event_name == 'pull_request' &&
         github.event.pull_request.base.ref == 'develop' &&
@@ -280,10 +295,8 @@ jobs:
         if: github.event_name == 'pull_request'
         run: composer run-script lint
         
-      - name: Run test
-        if: github.event_name == 'pull_request'
-        run: |
-          /vendor/bin/phpunit
+      - name: Run Migrations for Testing
+        run: php artisan migrate --env=testing
           
       - name: Run GrumPHP
         if: github.event_name == 'pull_request'
