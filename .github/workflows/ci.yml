@@ -56,12 +56,13 @@ jobs:
         with:
           script: |
             const prNumber = context.payload.pull_request.number;
+            const prCreator = context.payload.pull_request.user.login;
             
             await github.rest.issues.addAssignees({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: prNumber,
-              assignees: [steps.get_pr.outputs.user_login]
+              assignees: [prCreator]
             });
       
       - name: Microsoft Teams Notification
