@@ -202,7 +202,7 @@ jobs:
             
             const hasCRLabel = prLabels.some(label => /CR/.test(label));
             if (!hasCRLabel) {
-              if (currentLabelNames.includes('APPROVAL')) {
+              if (prLabels.includes('APPROVAL')) {
                 try {
                   await github.rest.issues.removeLabel({
                     owner,
