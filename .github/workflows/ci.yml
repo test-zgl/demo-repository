@@ -200,23 +200,22 @@ jobs:
               issue_number: prNumber,
             });
             
-            const hasCRLabel = prLabels.some(label => /CR/.test(label));
-            console.log(hasCRLabel);
-            if (!hasCRLabel) {
-              if (prLabels.includes('APPROVAL')) {
-                try {
-                  await github.rest.issues.removeLabel({
-                    owner,
-                    repo,
-                    issue_number,
-                    name: 'APPROVAL'
-                  });
-                  console.log('Usunięto etykietę APPROVAL, ponieważ brakuje etykiet zawierających "CR".');
-                } catch (error) {
+            const prLabelNames = prLabels.map(label => label.name);
+            const hasCRLabel = prLabelNames.some(name => /CR/.test(name));
+            
+            if (!hasCRLabel && prLabelNames.includes('APPROVAL')) {
+              try {
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  name: 'APPROVAL'
+                });
+                console.log('Usunięto etykietę APPROVAL, ponieważ brakuje etykiet zawierających "CR".');
+              } catch (error) {
                   console.error('Nie udało się usunąć etykiety APPROVAL:', error);
                 }
               }
-            }
 
             
             const bypassLabels = ['Do Merge'];
