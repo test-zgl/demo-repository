@@ -145,7 +145,30 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             
-            const labelsToRemove = ['CR1', 'CR2'];
+            const labelsToRemove = ['CR1', 'CR2', 'APPROVAL'];
+            const { data: currentLabels } = await github.rest.issues.listLabelsOnIssue({
+              owner,
+              repo,
+              issue_number
+            });
+            const currentLabelNames = currentLabels.map(label => label.name);
+            const hasCRLabel = currentLabelNames.some(label => /CR/.test(label));
+            if (!hasCRLabel) {
+              if (currentLabelNames.includes('APPROVAL')) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number,
+                    name: 'APPROVAL'
+                  });
+                  console.log('Usunięto etykietę APPROVAL, ponieważ brakuje etykiet zawierających "CR".');
+                } catch (error) {
+                  console.error('Nie udało się usunąć etykiety APPROVAL:', error);
+                }
+              }
+            }
+            
             for (const label of labelsToRemove) {
               try {
                 await github.rest.issues.removeLabel({
