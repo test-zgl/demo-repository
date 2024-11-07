@@ -201,6 +201,7 @@ jobs:
             });
             
             const hasCRLabel = prLabels.some(label => /CR/.test(label));
+            console.log(hasCRLabel);
             if (!hasCRLabel) {
               if (prLabels.includes('APPROVAL')) {
                 try {
