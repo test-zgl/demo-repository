@@ -76,13 +76,9 @@ jobs:
                             },
                             {
                               "type": "TextBlock",
-                              "text": "Prośba o CR: ${{ github.event.pull_request.html_url }}",
+                              "text": "Prośba o CR: [Link do PR](${{ github.event.pull_request.html_url }})",
                               "wrap": true,
-                              "size": "Medium",
-                              "selectAction": {
-                                "type": "Action.OpenUrl",
-                                "url": "${{ github.event.pull_request.html_url }}"
-                              }
+                              "size": "Medium"
                             },
                             {
                               "type": "TextBlock",
