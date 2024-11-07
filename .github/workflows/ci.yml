@@ -45,11 +45,10 @@ jobs:
               pull_number: prNumber
             });
             console.log('PR DATA', pr);
-            return {
-              title: pr.title,
-              html_url: pr.html_url,
-              user_login: pr.user.login
-            }
+            
+            core.setOutput('title', pr.title);
+            core.setOutput('html_url', pr.html_url);
+            core.setOutput('user_login', pr.user.login);
             
       - name: Microsoft Teams Notification
         uses: skitionek/notify-microsoft-teams@master
@@ -78,7 +77,7 @@ jobs:
                                   "items": [
                                     {
                                       "type": "TextBlock",
-                                      "text": "${{ steps.get_pr.title }}",
+                                      "text": "${{ steps.get_pr.outputs.title }}",
                                       "weight": "Bolder",
                                       "size": "Large",
                                       "color": "Accent"
@@ -102,13 +101,13 @@ jobs:
                             },
                             {
                               "type": "TextBlock",
-                              "text": "Prośba o CR: [Link do PR](${{ steps.get_pr.url }})",
+                              "text": "Prośba o CR: [Link do PR](${{ steps.get_pr.outputs.html_url }})",
                               "wrap": true,
                               "size": "Medium"
                             },
                             {
                               "type": "TextBlock",
-                              "text": "Twórca PR: ${{ steps.get_pr.user.login }}",
+                              "text": "Twórca PR: ${{ steps.get_pr.outputs.user_login }}",
                               "wrap": true,
                               "size": "Medium"
                             }
