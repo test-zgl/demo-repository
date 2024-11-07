@@ -44,6 +44,7 @@ jobs:
               repo: context.repo.repo,
               pull_number: prNumber
             });
+            console.log('PR DATA', pr);
             return {
               title: pr.title,
               html_url: pr.html_url,
