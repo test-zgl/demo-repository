@@ -78,7 +78,7 @@ jobs:
                                   "items": [
                                     {
                                       "type": "TextBlock",
-                                      "text": "${{ steps.get_pr.outputs.title }}",
+                                      "text": "${{ steps.get_pr.title }}",
                                       "weight": "Bolder",
                                       "size": "Large",
                                       "color": "Accent"
@@ -102,13 +102,13 @@ jobs:
                             },
                             {
                               "type": "TextBlock",
-                              "text": "Prośba o CR: [Link do PR](${{ github.issue.html_url }})",
+                              "text": "Prośba o CR: [Link do PR](${{ steps.get_pr.url }})",
                               "wrap": true,
                               "size": "Medium"
                             },
                             {
                               "type": "TextBlock",
-                              "text": "Twórca PR: ${{ github.issue.user.login }}",
+                              "text": "Twórca PR: ${{ steps.get_pr.user.login }}",
                               "wrap": true,
                               "size": "Medium"
                             }
