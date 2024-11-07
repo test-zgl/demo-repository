@@ -31,6 +31,25 @@ jobs:
         github.event.issue.pull_request)
         
     steps:
+      - name: Get data Pull Request
+        if: github.event_name == 'issue_comment' && github.event.comment.body == '/ping'
+        uses: actions/github-script@v6
+        id: get_pr
+        with:
+          script: |
+            const prUrl = context.payload.issue.pull_request.url;
+            const prNumber = context.payload.issue.number;
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+            return {
+              title: pr.title,
+              html_url: pr.html_url,
+              user_login: pr.user.login
+            }
+            
       - name: Microsoft Teams Notification
         uses: skitionek/notify-microsoft-teams@master
         if: github.event_name == 'issue_comment' && github.event.comment.body == '/ping'
@@ -58,7 +77,7 @@ jobs:
                                   "items": [
                                     {
                                       "type": "TextBlock",
-                                      "text": "${{ github.issue.title }}",
+                                      "text": "${{ steps.get_pr.outputs.title }}",
                                       "weight": "Bolder",
                                       "size": "Large",
                                       "color": "Accent"
